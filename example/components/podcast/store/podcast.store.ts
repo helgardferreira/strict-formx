@@ -6,8 +6,16 @@ import {
   makeObservable,
   action,
   FormStore,
+  FormFieldObject,
 } from '../../../../dist';
 import LangTexts from './lang-texts.store';
+
+interface IPodcast {
+  name: string;
+  author: string;
+  desc: string;
+  langTexts: LangTexts[];
+}
 
 export default class PodcastStore extends FormStore {
   @observable
@@ -47,5 +55,9 @@ export default class PodcastStore extends FormStore {
     super();
     makeObservable(this);
     this.addLang('English');
+
+    this.mapStateToStore<PodcastStore>({
+      name: 'Example Name',
+    });
   }
 }
