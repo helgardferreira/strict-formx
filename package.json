@@ -34,7 +34,11 @@
     "trailingComma": "es5"
   },
   "name": "strict-formx",
-  "author": "Helgard Richard Ferreira",
+  "author": {
+    "name": "Helgard Richard Ferreira",
+    "email": "hrfer3@gmail.com",
+    "url": "https://helgard.dev/"
+  },
   "description": "Strict FormX is an idiomatic, transparent, and declarative React & TypeScript Form library that aims to provide an intuitive, yet comprehensive, development experience.",
   "module": "dist/strict-formx.esm.js",
   "size-limit": [
@@ -47,6 +51,7 @@
       "limit": "10 KB"
     }
   ],
+  "repository": "https://github.com/helgardferreira/strict-formx",
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.10.2",
     "@types/react": "^17.0.3",
