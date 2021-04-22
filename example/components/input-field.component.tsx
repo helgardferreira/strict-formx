@@ -1,16 +1,18 @@
 import React, { PropsWithChildren } from 'react';
 import { FormStore, FormFieldKeys, observer } from '../../.';
 
-interface IProps<T extends FormStore> {
-  store: T;
-  fieldName?: FormFieldKeys<T>;
+interface IProps<T, U extends FormStore<T>> {
+  store: U;
+  fieldName?: FormFieldKeys<U>;
   value?: any;
   id?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-function InputField<T extends FormStore>(props: PropsWithChildren<IProps<T>>) {
+function InputField<T, U extends FormStore<T>>(
+  props: PropsWithChildren<IProps<T, U>>
+) {
   const { fieldName, id, store, value, onChange, onBlur } = props;
 
   /* function objPath(obj: object, pathArr: string[]): any {

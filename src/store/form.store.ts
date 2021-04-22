@@ -3,12 +3,24 @@ import { validate, ValidationError } from 'class-validator';
 import { observable, action, makeObservable } from 'mobx';
 import { FormFieldKeys, FormFieldObject } from '../types';
 
-export class FormStore {
+export type Recursive<Values, Value> = {
+  [K in keyof Values]?: Values[K] extends any[]
+    ? Values[K][number] extends object
+      ? Recursive<Values[K][number], Value>[]
+      : Value
+    : Values[K] extends object
+    ? Recursive<Values[K], Value>
+    : Value;
+};
+
+export type StrictTouched<T> = Recursive<T, boolean>;
+
+export class FormStore<T> {
   @observable
   errors: ValidationError[] = [];
 
   @observable
-  touched: Partial<Record<FormFieldKeys<this>, boolean>> = {};
+  touched: StrictTouched<FormFieldObject<T>> = {};
 
   @action
   async validate() {
@@ -31,29 +43,34 @@ export class FormStore {
   }
 
   @action
-  setFieldValue<T extends FormFieldKeys<this>>(
-    field: T,
-    value: FormFieldObject<this>[T]
+  setFieldValue<U extends FormFieldKeys<T>>(
+    field: U,
+    value: FormFieldObject<T>[U]
   ) {
-    this[field] = value;
-    this.touched[field] = true;
+    this[field as keyof this] = value as any;
+    if (typeof this.touched[field] === 'boolean') {
+      (this.touched[field] as boolean) = true;
+    }
     this.validate();
   }
 
   @action
-  setFieldTouched<T extends FormFieldKeys<this>>(field: T, value: boolean) {
+  setFieldTouched<U extends keyof StrictTouched<FormFieldObject<T>>>(
+    field: U,
+    value: StrictTouched<FormFieldObject<T>>[U]
+  ) {
     this.touched[field] = value;
     this.validate();
   }
 
-  private isValidKey<T>(key: keyof T | string, state: T): key is keyof T {
+  private isValidKey<U>(key: keyof U | string, state: U): key is keyof U {
     return Object.prototype.hasOwnProperty.call(state, key);
   }
 
-  private doKeysOverlap<T>(
-    keys: (keyof this & keyof T)[] | string[],
-    state: T
-  ): keys is (keyof this & keyof T)[] {
+  private doKeysOverlap<U>(
+    keys: (keyof this & keyof U)[] | string[],
+    state: U
+  ): keys is (keyof this & keyof U)[] {
     for (const key of keys) {
       if (!this.isValidKey(key, this) || !this.isValidKey(key, state)) {
         return false;
@@ -63,7 +80,7 @@ export class FormStore {
   }
 
   @action
-  mapStateToStore<T extends FormStore>(state: Partial<FormFieldObject<T>>) {
+  mapStateToStore<T>(state: Partial<FormFieldObject<T>>) {
     const keys = Object.keys(state);
     if (this.doKeysOverlap(keys, state)) {
       keys.forEach((key: keyof this & keyof typeof state) => {

@@ -6,7 +6,6 @@ import {
   makeObservable,
   action,
   FormStore,
-  FormFieldObject,
 } from '../../../../dist';
 import LangTexts from './lang-texts.store';
 
@@ -17,7 +16,8 @@ interface IPodcast {
   langTexts: LangTexts[];
 }
 
-export default class PodcastStore extends FormStore {
+export default class PodcastStore extends FormStore<PodcastStore>
+  implements IPodcast {
   @observable
   @IsNotEmpty()
   @IsString()
@@ -44,10 +44,27 @@ export default class PodcastStore extends FormStore {
 
   @action
   setLangValue(language: string, field: keyof LangTexts, value: any) {
-    const langText = this.langTexts.find(lang => lang.language === language);
-    if (!langText) return;
+    const langIndex = this.langTexts.findIndex(
+      lang => lang.language === language
+    );
+    if (langIndex === -1) return;
 
-    langText[field] = value;
+    if (this.touched.langTexts !== undefined) {
+      if (this.touched.langTexts[langIndex] !== undefined) {
+        this.touched.langTexts[langIndex][field] = true;
+      } else {
+        this.touched.langTexts[langIndex] = {
+          [field]: true,
+        };
+      }
+    } else {
+      this.touched.langTexts = new Array(this.langTexts.length);
+      this.touched.langTexts[langIndex] = {
+        [field]: true,
+      };
+    }
+
+    this.langTexts[langIndex][field] = value;
     this.validate();
   }
 
