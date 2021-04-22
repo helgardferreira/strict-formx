@@ -52,14 +52,16 @@
     }
   ],
   "repository": "https://github.com/helgardferreira/strict-formx",
+  "dependencies": {
+    "class-validator": "^0.13.1",
+    "mobx": "^6.2.0",
+    "mobx-react": "^7.1.0"
+  },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.10.2",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "class-validator": "^0.13.1",
     "husky": "^6.0.0",
-    "mobx": "^6.2.0",
-    "mobx-react": "^7.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "size-limit": "^4.10.2",
