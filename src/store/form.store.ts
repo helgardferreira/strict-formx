@@ -48,9 +48,6 @@ export class FormStore<T> {
     value: FormFieldObject<T>[U]
   ) {
     this[field as keyof this] = value as any;
-    if (typeof this.touched[field] === 'boolean') {
-      (this.touched[field] as boolean) = true;
-    }
     this.validate();
   }
 
