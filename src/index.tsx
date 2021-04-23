@@ -1,7 +1,12 @@
 import StrictForm from './components/strict-form.component';
 import { FormProvider, useForm } from './context/form.context';
 import { FormStore } from './store/form.store';
-import { FormFieldKeys, FormFieldObject } from './types';
+import {
+  FormFieldKeys,
+  FormFieldObject,
+  Recursive,
+  StrictTouched,
+} from './types';
 
 import { Observer, observer } from 'mobx-react';
 import {
@@ -29,4 +34,6 @@ export {
   computed,
   ObservableMap,
   ObservableSet,
+  Recursive,
+  StrictTouched,
 };

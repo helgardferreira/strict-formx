@@ -1,19 +1,7 @@
 import { validate, ValidationError } from 'class-validator';
 
 import { observable, action, makeObservable } from 'mobx';
-import { FormFieldKeys, FormFieldObject } from '../types';
-
-export type Recursive<Values, Value> = {
-  [K in keyof Values]?: Values[K] extends any[]
-    ? Values[K][number] extends object
-      ? Recursive<Values[K][number], Value>[]
-      : Value
-    : Values[K] extends object
-    ? Recursive<Values[K], Value>
-    : Value;
-};
-
-export type StrictTouched<T> = Recursive<T, boolean>;
+import { FormFieldKeys, FormFieldObject, StrictTouched } from '../types';
 
 export class FormStore<T> {
   @observable
