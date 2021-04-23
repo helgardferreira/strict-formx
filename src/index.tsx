@@ -4,7 +4,14 @@ import { FormStore } from './store/form.store';
 import { FormFieldKeys, FormFieldObject } from './types';
 
 import { Observer, observer } from 'mobx-react';
-import { observable, makeObservable, action, computed } from 'mobx';
+import {
+  observable,
+  makeObservable,
+  action,
+  computed,
+  ObservableMap,
+  ObservableSet,
+} from 'mobx';
 export * from 'class-validator';
 
 export {
@@ -20,4 +27,6 @@ export {
   makeObservable,
   action,
   computed,
+  ObservableMap,
+  ObservableSet,
 };
