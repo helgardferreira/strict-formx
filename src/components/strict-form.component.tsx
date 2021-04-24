@@ -3,12 +3,12 @@ import { FormFieldObject } from '../types';
 import { FormProvider } from '../context/form.context';
 import { FormStore } from '../store/form.store';
 
-interface FormProps<T extends FormStore> {
+interface FormProps<T extends FormStore<T>> {
   store: T;
   handleSubmit: (fields: FormFieldObject<T>) => void;
 }
 
-class StrictForm<T extends FormStore> extends Component<
+class StrictForm<T extends FormStore<T>> extends Component<
   FormProps<T>
   // FormState<T>
 > {
